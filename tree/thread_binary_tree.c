@@ -51,44 +51,83 @@ void create_thr_bt(thr_bt_t * thr_bt)
 	}
 }
 
-void in_order(thr_bt_t * p, thr_bt_t * pre)
+
+void in_threading(thr_bt_t * p,thr_bt_t *pre)
 {
-	if(*p == NULL)
-		return ;
-	in_order(&(*p)->left,pre);
-	(*p)->left = *pre;
-	*pre = *p;
-	in_order(&(*p)->right,pre);
+	if(*p)
+	{
+		in_threading(&((*p)->left),pre);
+		
+		if(!((*p)->left))
+		{
+			(*p)->left		= *pre;
+			(*p)->left_tag	= THREAD;
+		}
+
+		if(!((*pre)->right))
+		{
+			(*pre)->right		= *p;
+			(*pre)->right_tag	= THREAD;
+		}
+
+		*pre = *p;
+
+		in_threading(&((*p)->right),pre);
+		
+	}
+
 }
+
+
+
+
 
 /*按中序线索化*/
 void in_order_threading(thr_bt_t *thr_bt_head,thr_bt_t thr_bt)
 {
 	thr_bt_t pre = thr_bt;
-
-	*thr_bt_head = (thr_bt_t )malloc(sizeof(thr_bt_t));
+	(*thr_bt_head) = (thr_bt_t )malloc(sizeof(thr_bt_node_t));
 	MALLOC_CHECK(*thr_bt_head);
+
+	(*thr_bt_head)->left_tag	= LINK;
+	(*thr_bt_head)->right_tag	= THREAD;
+	(*thr_bt_head)->left		= thr_bt;
+	
 	if(!thr_bt)
 	{
-		(*thr_bt_head)->left  = thr_bt_head;
-		(*thr_bt_head)->right = thr_bt_head;
+		(*thr_bt_head)->right	= *thr_bt_head;
 	}else
 	{
-		(*thr_bt_head)->left = thr_bt;
 		pre = *thr_bt_head;
-		in_order(&(*thr_bt_head)->left,&pre);
+		in_threading(&((*thr_bt_head)->left),&pre);
+		pre->right_tag = THREAD;
+		pre->right = *thr_bt_head;
 		(*thr_bt_head)->right = pre;
 	}
+
+
 }
+
 
 void traverse_list(thr_bt_t thr_bt_head)
 {
-	thr_bt_t tmp = thr_bt_head;
-	if(thr_bt_head == NULL)
-		return 0;
-	thr_bt_head = thr_bt_head->left;
-
+	thr_bt_t p = thr_bt_head->left;
+	while(p != thr_bt_head)
+	{
+		while(p->left_tag == LINK)
+			p = p->left;
+		printf("%c",p->data);
+		while(p->right_tag == THREAD && p->right != thr_bt_head)
+		{
+			p = p->right;
+			printf("%c",p->data);
+		}
+		p = p->right;
+	}
+	return 0;
 }
+
+
 int main()
 {
 	thr_bt_t thr_bt = NULL;
@@ -99,5 +138,6 @@ int main()
 	in_order_threading(&thr_bt_head,thr_bt);
 
 	traverse_list(thr_bt_head);
+	printf("\n");	
 	return 0;
 }
