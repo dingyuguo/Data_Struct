@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "binary_tree.h"
 #include "stack.h"
-
+#include "queue.h"
 void  init_binary_tree(bt_tree * bt)
 {
 	bt_tree bt_tmp;
@@ -166,6 +166,28 @@ void in_order_stack_traverse_2(bt_tree *bt,traverse_func visit)
 	}
 }
 
+void level_traverse(bt_tree *bt, traverse_func visit)
+{
+	queue_t q;
+	init_queue(&q);
+	en_queue(&q,*bt);
+	while(!is_empty_queue(&q))
+	{
+		de_queue(&q,bt);
+		visit("%c",(*bt)->data);
+		
+		if((*bt)->left_child)
+		{
+			en_queue(&q,(*bt)->left_child);
+		}
+		
+		if((*bt)->right_child)
+		{
+			en_queue(&q,(*bt)->right_child);
+		}
+	
+	}
+}
 
 bt_ops_t bt_ops = {
 	.base_ops.init_tree		= init_binary_tree,
@@ -232,7 +254,8 @@ int  main()
 	printf("\n\n");
 	printf("非递归中序遍历-2\n");
 	in_order_stack_traverse_2(&bt,printf);
-
+	printf("\n\n层次遍历：\n");
+	level_traverse(&bt,printf);
 #endif
 	printf("\n\n");
 	return 0;
