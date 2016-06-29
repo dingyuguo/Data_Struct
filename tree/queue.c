@@ -55,31 +55,6 @@ void de_queue(queue_t * q,bt_tree * bt)
 	q->len -= 1;
 }
 
-#if 0
-int main()
-{
-	queue_t q;
-	int i = 0;
-	int j = 0;
-	
-	init_queue(&q);
-	
-	for(i = 0;i < 10;i++)
-	{
-		en_queue(&q,i);
-	}
-	
-	for(i = 0;i < 10;i++)
-	{
-		de_queue(&q,&j);
-		printf("%d-----%d\n",j,q.len);
-	
-	}
-
-		
-	return 0;
-}
-#endif
 
 
 

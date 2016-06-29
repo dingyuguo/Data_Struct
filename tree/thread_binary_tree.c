@@ -124,20 +124,8 @@ void traverse_list(thr_bt_t thr_bt_head)
 		}
 		p = p->right;
 	}
-	return 0;
+//	return 0;
 }
 
 
-int main()
-{
-	thr_bt_t thr_bt = NULL;
-	thr_bt_t thr_bt_head = NULL;
 
-	create_thr_bt(&thr_bt);
-
-	in_order_threading(&thr_bt_head,thr_bt);
-
-	traverse_list(thr_bt_head);
-	printf("\n");	
-	return 0;
-}

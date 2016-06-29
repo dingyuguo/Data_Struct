@@ -28,11 +28,17 @@ typedef struct binary_tree_s{
 typedef bt_node * bt_tree;
 
 
+extern bt_ops_t bt_ops;
+
+bt_tree pre_in(char * pre,char *in,int len);
+bt_tree post_in(char * pre,char *in,int len);
 
 
 
+void in_order_stack_traverse(bt_tree *bt,traverse_func visit);
 
-
+void in_order_stack_traverse_2(bt_tree *bt,traverse_func visit);
+void pre_order_stack_traverse(bt_tree *bt,traverse_func visit);
 
 #endif
 

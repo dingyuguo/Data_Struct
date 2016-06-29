@@ -7,6 +7,8 @@
 #ifndef _TREE_HEADER
 #define _TREE_HEADER
 #include <stdio.h>
+#include <memory.h>
+
 #define MALLOC_CHECK(p)  if(!p)	\
 						 {		\
 							 printf("%s--%d:\tmalloc faild!",__func__,__LINE__); \

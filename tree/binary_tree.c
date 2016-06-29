@@ -9,7 +9,7 @@
 #include "binary_tree.h"
 #include "stack.h"
 #include "queue.h"
-void  init_binary_tree(bt_tree * bt)
+static void  init_binary_tree(bt_tree * bt)
 {
 	bt_tree bt_tmp;
 
@@ -21,7 +21,7 @@ void  init_binary_tree(bt_tree * bt)
 	printf("init binary tree Success!\n");
 }
 
-int create_binary_tree(bt_tree * bt)
+static int create_binary_tree(bt_tree * bt)
 {
 	char ch = 0;
 
@@ -50,7 +50,7 @@ int create_binary_tree(bt_tree * bt)
 
 
 //DLR
-void pre_order_traverse(bt_tree * bt,traverse_func visit)
+static void pre_order_traverse(bt_tree * bt,traverse_func visit)
 {
 	static int i = 0;
 	bt_tree bt_tmp = *bt;
@@ -65,7 +65,7 @@ void pre_order_traverse(bt_tree * bt,traverse_func visit)
 	pre_order_traverse(&(bt_tmp->right_child),visit);
 }
 //LDR
-void in_order_traverse(bt_tree *bt,traverse_func visit)
+static void in_order_traverse(bt_tree *bt,traverse_func visit)
 {
 	static int i = 0;
 
@@ -81,7 +81,7 @@ void in_order_traverse(bt_tree *bt,traverse_func visit)
 	in_order_traverse(&((*bt)->right_child),visit);
 }
 //LRD
-void post_order_traverse(bt_tree *bt,traverse_func visit)
+static void post_order_traverse(bt_tree *bt,traverse_func visit)
 {
 	static int i = 0;
 	if(*bt == NULL)
@@ -166,7 +166,7 @@ void in_order_stack_traverse_2(bt_tree *bt,traverse_func visit)
 	}
 }
 
-void level_traverse(bt_tree *bt, traverse_func visit)
+static void level_traverse(bt_tree *bt, traverse_func visit)
 {
 	queue_t q;
 	init_queue(&q);
@@ -195,82 +195,8 @@ bt_ops_t bt_ops = {
 	.pre_order_traverse		= pre_order_traverse,
 	.in_order_traverse		= in_order_traverse,
 	.post_order_traverse	= post_order_traverse,
+	.level_order_traverse	= level_traverse,
 };
-
-
-
-
-void traverse_bt(bt_tree bt,void * (*push)(bt_stack_t *  ,bt_tree ),bt_stack_t * bt_stack)
-{
-	if(bt == NULL)
-		return ;
-	push(bt_stack,bt);
-	traverse_bt(bt->left_child,push,bt_stack);
-	traverse_bt(bt->right_child,push,bt_stack);
-}
-
-int  main()
-{
-	bt_tree bt = NULL;
-	bt_tree bt_tmp = NULL;
-	bt_stack_t bt_stack;
-	bt_ops.base_ops.init_tree(&bt);
-	
-	printf("Input Data: ");
-	bt_ops.base_ops.create_tree(&bt);
-	printf("Success!\n");
-
-#if 0
-		
-	init_bt_stack(&bt_stack);
-	traverse_bt(bt,push,&bt_stack);
-
-	bt_tmp = (bt_tree)malloc(sizeof(bt_node));
-	MALLOC_CHECK(bt_tmp);
-	memset(bt_tmp, 0 ,sizeof(bt_node));
-	
-	while(bt_stack.top - bt_stack.base)
-	{
-		pop(&bt_stack,&bt_tmp);
-		if(bt_tmp)
-			printf("%c\n",bt_tmp->data);
-	}
-
-#else
-	printf("先序遍历\n");
-	bt_ops.pre_order_traverse(&bt,printf);
-	printf("\n\n");
-	printf("中序遍历\n");
-	bt_ops.in_order_traverse(&bt,printf);
-	printf("\n\n");
-	printf("后序遍历\n");
-	bt_ops.post_order_traverse(&bt,printf);
-	printf("\n\n");
-	printf("非递归中序遍历-1\n");
-	in_order_stack_traverse(&bt,printf);
-	printf("\n\n");
-	printf("非递归前序遍历-1\n");
-	pre_order_stack_traverse(&bt,printf);
-	printf("\n\n");
-	printf("非递归中序遍历-2\n");
-	in_order_stack_traverse_2(&bt,printf);
-	printf("\n\n层次遍历：\n");
-	level_traverse(&bt,printf);
-#endif
-	printf("\n\n");
-	return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
 
 
 
